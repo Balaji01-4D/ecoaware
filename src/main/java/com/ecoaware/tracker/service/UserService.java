@@ -1,5 +1,6 @@
 package com.ecoaware.tracker.service;
 
+import com.ecoaware.tracker.DTO.UsersResponse;
 import com.ecoaware.tracker.model.Users;
 import com.ecoaware.tracker.repo.UserRepo;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -30,4 +31,17 @@ public class UserService {
     public Users loadUserByUsername(String username) {
         return userRepo.getByName(username);
     }
+
+    public Users getUserByEmail(String email) {
+        return userRepo.findByEmail(email);
+    }
+
+    public UsersResponse convertToUserResponseDto(Users user) {
+        UsersResponse response = new UsersResponse();
+        response.setId(user.getId());
+        response.setName(user.getName());
+        response.setEmail(user.getEmail());
+        return response;
+    }
+
 }

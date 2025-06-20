@@ -36,7 +36,7 @@ public class AdminController {
     }
 
 
-    @PutMapping("/admin/complaints/{id}/status")
+    @PutMapping("/complaints/{id}/status")
     public ResponseEntity<ComplaintResponse> updateStatus(@PathVariable Long id, @RequestBody ComplaintStatusUpdate complaintStatus) {
         Complaint complaint = complaintService.getById(id);
         complaint.setStatus(complaintStatus.getStatus());

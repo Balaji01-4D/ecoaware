@@ -40,6 +40,7 @@ public class AdminController {
     public ResponseEntity<ComplaintResponse> updateStatus(@PathVariable Long id, @RequestBody ComplaintStatusUpdate complaintStatus) {
         Complaint complaint = complaintService.getById(id);
         complaint.setStatus(complaintStatus.getStatus());
+        complaintService.saveComplaint(complaint);
         return ResponseEntity.ok(complaintService.convertToResponseDto(complaint));
     }
 

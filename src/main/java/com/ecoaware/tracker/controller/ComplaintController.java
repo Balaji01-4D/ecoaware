@@ -6,10 +6,12 @@ import com.ecoaware.tracker.model.Complaint;
 import com.ecoaware.tracker.model.Users;
 import com.ecoaware.tracker.service.ComplaintService;
 import com.ecoaware.tracker.service.UserService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -54,7 +56,13 @@ public class ComplaintController {
 
 
     @GetMapping("/complaints/{id}")
-    public ResponseEntity<ComplaintResponse> getComplaintById(@PathVariable Long id){
-        return ResponseEntity.ok(complaintService.getById(id));
+    public ResponseEntity<ComplaintResponse> getComplaintById(@AuthenticationPrincipal UserDetails userDetails, @PathVariable Long id){
+        ComplaintResponse complaint = complaintService.getById(id);
+        Users user = userService.getUserByEmail(userDetails.getUsername());
+        System.out.println(user);
+        if (!user.getRole().equals("ADMIN") && !complaint.getUsersResponse().getId().equals(user.getId())) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "complaint not found");
+        }
+        return ResponseEntity.ok(complaint);
     }
 }

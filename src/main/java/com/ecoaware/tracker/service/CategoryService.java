@@ -27,6 +27,7 @@ public class CategoryService {
     public CategoryResponse convertToCategoryDto(Category category) {
         CategoryResponse response = new CategoryResponse();
         response.setName(category.getName());
+        response.setId(category.getId());
         return response;
     }
 }

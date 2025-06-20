@@ -23,4 +23,11 @@ public class Users {
     private String password;
     private String role;
 
+
+    public Users(String name, String email, String password, String role) {
+        this.name = name;
+        this.email = email;
+        this.password = password;
+        this.role = role;
+    }
 }

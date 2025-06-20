@@ -1,5 +1,7 @@
 package com.ecoaware.tracker.controller;
 
+import com.ecoaware.tracker.DTO.UsersRequest;
+import com.ecoaware.tracker.DTO.UsersResponse;
 import com.ecoaware.tracker.model.Users;
 import com.ecoaware.tracker.service.UserService;
 import org.apache.catalina.User;
@@ -20,8 +22,8 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<Users> register(@RequestBody Users user) {
-        return ResponseEntity.ok(userService.addUser(user));
+    public ResponseEntity<UsersResponse> register(@RequestBody UsersRequest usersRequest) {
+        return ResponseEntity.ok(userService.addUser(usersRequest));
     }
 
 

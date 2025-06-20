@@ -1,10 +1,9 @@
 package com.ecoaware.tracker.service;
 
+import com.ecoaware.tracker.DTO.UsersRequest;
 import com.ecoaware.tracker.DTO.UsersResponse;
 import com.ecoaware.tracker.model.Users;
 import com.ecoaware.tracker.repo.UserRepo;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -19,9 +18,23 @@ public class UserService {
         this.userRepo = userRepo;
     }
 
-    public Users addUser(Users user) {
-        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-        return userRepo.save(user);
+    public UsersResponse addUser(UsersRequest usersRequest) {
+        return convertToUserResponseDto(userRepo.save(convertToUser(usersRequest)));
+    }
+
+    private Users convertToUser(UsersRequest usersRequest){
+        String encodedPassword = passwordEncoder(usersRequest.getPassword());
+        return new Users(
+                usersRequest.getName(),
+                usersRequest.getEmail(),
+                encodedPassword,
+                usersRequest.getRole()
+        );
+
+    }
+
+    private String passwordEncoder(String password) {
+        return bCryptPasswordEncoder.encode(password);
     }
 
     public boolean verify(Users user) {

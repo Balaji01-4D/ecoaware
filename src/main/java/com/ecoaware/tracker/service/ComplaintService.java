@@ -5,9 +5,9 @@ import com.ecoaware.tracker.DTO.ComplaintResponse;
 import com.ecoaware.tracker.model.Complaint;
 import com.ecoaware.tracker.model.Users;
 import com.ecoaware.tracker.repo.ComplaintRepo;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -29,7 +29,7 @@ public class ComplaintService {
         return complaintRepo.findAll();
     }
 
-    public ComplaintResponse addComplaint(ComplaintRequest complaintRequest, Users user) {
+    public Complaint fromRequestDto(ComplaintRequest complaintRequest, Users user){
         Complaint complaint = new Complaint();
         complaint.setTitle(complaintRequest.getTitle());
         complaint.setDescription(complaintRequest.getDescription());
@@ -38,20 +38,19 @@ public class ComplaintService {
         complaint.setStatus("PENDING");
         complaint.setCreatedAt(LocalDateTime.now());
         complaint.setCreatedBy(user);
-        complaintRepo.save(complaint);
-        return convertToDto(complaint, user);
+        return complaint;
     }
 
-    public ComplaintResponse getById(Long id) {
-        Complaint complaint = complaintRepo.findById(id).orElse(new Complaint());
-        return convertToDto(complaint, complaint.getCreatedBy());
+    public Complaint getById(Long id) {
+        return complaintRepo.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "complaint not found"));
     }
 
     public List<Complaint> getComplaintsById(Long id) {
         return complaintRepo.findByCreatedById(id);
     }
 
-    public ComplaintResponse convertToDto(Complaint complaint, Users user) {
+    public ComplaintResponse convertToResponseDto(Complaint complaint) {
+        Users user = complaint.getCreatedBy();
         ComplaintResponse response = new ComplaintResponse();
         response.setId(complaint.getId());
         response.setTitle(complaint.getTitle());
@@ -61,4 +60,30 @@ public class ComplaintService {
         response.setCategoryResponse(categoryService.convertToCategoryDto(complaint.getCategory()));
         return response;
     }
+
+    public void deleteComplaintById(Long id) {
+        complaintRepo.deleteById(id);
+    }
+
+
+    public Complaint updateFromRequestDto(Complaint complaint, ComplaintRequest complaintRequest) {
+        String title = complaintRequest.getTitle();
+        String description = complaintRequest.getDescription();
+        String imagePath = complaintRequest.getImagePath();
+        Long categoryId = complaintRequest.getCategoryId();
+        if (title != null) complaint.setTitle(title);
+        if (description != null) complaint.setDescription(description);
+        if (imagePath != null) complaint.setImagePath(imagePath);
+        if (categoryId != null) complaint.setCategory(categoryService.findById(categoryId));
+
+        return complaint;
+    }
+
+    public void saveComplaint(Complaint complaint) {
+        complaintRepo.save(complaint);
+    }
+
+
 }
+
+

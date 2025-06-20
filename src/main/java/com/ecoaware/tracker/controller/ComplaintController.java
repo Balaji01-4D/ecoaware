@@ -43,7 +43,7 @@ public class ComplaintController {
         Users user = userService.getUserByEmail(userDetails.getUsername());
         List<Complaint> complaints = complaintService.getComplaintsById(user.getId());
         List<ComplaintResponse> responses = complaints.stream()
-                .map(Complaint -> complaintService.convertToDto(Complaint, user))
+                .map(complaintService::convertToResponseDto)
                 .toList();
         return ResponseEntity.ok(responses);
     }
@@ -51,18 +51,46 @@ public class ComplaintController {
     @PostMapping("/complaints")
     public ResponseEntity<ComplaintResponse> addComplaint(@AuthenticationPrincipal UserDetails userDetails, @RequestBody ComplaintRequest complaintRequest) {
         Users user = userService.getUserByEmail(userDetails.getUsername());
-        return ResponseEntity.ok(complaintService.addComplaint(complaintRequest, user));
+        Complaint complaint = complaintService.fromRequestDto(complaintRequest, user);
+        complaintService.saveComplaint(complaint);
+        return ResponseEntity.ok(complaintService.convertToResponseDto(complaint));
     }
 
 
     @GetMapping("/complaints/{id}")
     public ResponseEntity<ComplaintResponse> getComplaintById(@AuthenticationPrincipal UserDetails userDetails, @PathVariable Long id){
-        ComplaintResponse complaint = complaintService.getById(id);
+        Complaint complaint = complaintService.getById(id);
         Users user = userService.getUserByEmail(userDetails.getUsername());
-        System.out.println(user);
-        if (!user.getRole().equals("ADMIN") && !complaint.getUsersResponse().getId().equals(user.getId())) {
+        if (!user.getRole().equals("ADMIN") && !complaint.getCreatedBy().getId().equals(user.getId())) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "complaint not found");
         }
-        return ResponseEntity.ok(complaint);
+        ComplaintResponse response = complaintService.convertToResponseDto(complaint);
+        return ResponseEntity.ok(response);
     }
+
+    @PutMapping("/complaints/{id}")
+    public ResponseEntity<ComplaintResponse> updateComplaintById(@AuthenticationPrincipal UserDetails userDetails,
+                                                                 @PathVariable Long id,
+                                                                 @RequestBody ComplaintRequest complaintRequest) {
+        Complaint complaint = complaintService.getById(id);
+        Users user = userService.getUserByEmail(userDetails.getUsername());
+        if (!user.getRole().equals("ADMIN") && !complaint.getCreatedBy().getId().equals(user.getId())) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "complaint not found");
+        }
+        Complaint updateComplaint = complaintService.updateFromRequestDto(complaint, complaintRequest);
+        complaintService.saveComplaint(updateComplaint);
+        return ResponseEntity.ok(complaintService.convertToResponseDto(updateComplaint));
+    }
+
+    @DeleteMapping("/complaints/{id}")
+    public ResponseEntity<String> deleteComplaintById(@AuthenticationPrincipal UserDetails userDetails, @PathVariable Long id){
+        Complaint complaint = complaintService.getById(id);
+        Users user = userService.getUserByEmail(userDetails.getUsername());
+        if (!user.getRole().equals("ADMIN") && !complaint.getCreatedBy().getId().equals(user.getId())) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "complaint not found");
+        }
+        complaintService.deleteComplaintById(id);
+        return ResponseEntity.ok("complaint deleted");
+    }
+
 }

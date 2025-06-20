@@ -2,6 +2,7 @@ package com.ecoaware.tracker.service;
 
 import com.ecoaware.tracker.DTO.ComplaintRequest;
 import com.ecoaware.tracker.DTO.ComplaintResponse;
+import com.ecoaware.tracker.enums.Status;
 import com.ecoaware.tracker.model.Complaint;
 import com.ecoaware.tracker.model.Users;
 import com.ecoaware.tracker.repo.ComplaintRepo;
@@ -35,7 +36,7 @@ public class ComplaintService {
         complaint.setDescription(complaintRequest.getDescription());
         complaint.setCategory(categoryService.findById(complaintRequest.getCategoryId()));
         complaint.setImagePath(complaintRequest.getImagePath());
-        complaint.setStatus("PENDING");
+        complaint.setStatus(Status.PENDING);
         complaint.setCreatedAt(LocalDateTime.now());
         complaint.setCreatedBy(user);
         return complaint;
@@ -56,6 +57,7 @@ public class ComplaintService {
         response.setTitle(complaint.getTitle());
         response.setDescription(complaint.getDescription());
         response.setImagePath(complaint.getImagePath());
+        response.setStatus(complaint.getStatus());
         response.setUsersResponse(userService.convertToUserResponseDto(user));
         response.setCategoryResponse(categoryService.convertToCategoryDto(complaint.getCategory()));
         return response;

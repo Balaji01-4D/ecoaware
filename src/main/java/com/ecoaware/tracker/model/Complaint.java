@@ -1,5 +1,6 @@
 package com.ecoaware.tracker.model;
 
+import com.ecoaware.tracker.enums.Status;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -19,7 +20,10 @@ public class Complaint {
     private String title;
     private String description;
     private String imagePath;
-    private String status;
+
+    @Enumerated(EnumType.STRING)
+    private Status status;
+
     private LocalDateTime createdAt;
 
     @ManyToOne

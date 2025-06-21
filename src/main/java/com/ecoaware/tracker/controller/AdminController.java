@@ -11,10 +11,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
+@CrossOrigin
 @RequestMapping("/admin")
 public class AdminController {
 
-    private ComplaintService complaintService;
+    private final ComplaintService complaintService;
 
     public AdminController(ComplaintService complaintService) {
         this.complaintService = complaintService;
@@ -29,7 +30,7 @@ public class AdminController {
     @GetMapping("/complaints")
     public ResponseEntity<List<ComplaintResponse>> getAllComplaint() {
         List<ComplaintResponse> complaintResponses = complaintService.getAllComplaints().stream()
-                .map(complaint -> complaintService.convertToResponseDto(complaint))
+                .map(complaintService::convertToResponseDto)
                 .toList();
 
         return ResponseEntity.ok(complaintResponses);

@@ -44,12 +44,12 @@ A production-ready, secure complaint tracking system built using **Spring Boot**
 
 | Layer       | Technology               |
 | ----------- | ------------------------ |
-| Backend     | Spring Boot (Stable)     |
+| Backend     | Spring Boot              |
 | Language    | Java 21                  |
 | Security    | Spring Security + JWT    |
 | Database    | PostgreSQL               |
 | ORM         | Spring Data JPA          |
-| File Upload | MultipartFile + /uploads |
+| File Upload | upload link for just now |
 | Build Tool  | Maven                    |
 
 ---
@@ -85,15 +85,6 @@ A production-ready, secure complaint tracking system built using **Spring Boot**
 | Endpoint      | Method | Description         |
 | ------------- | ------ | ------------------- |
 | `/categories` | GET    | List all categories |
-
----
-
-## 🧾 File Upload Handling
-
-* Accepts files via `MultipartFile`
-* Saves to `/uploads` directory
-* Stores file path in DB (`imagePath`)
-* Accessible via custom controller: `GET /images/{filename}`
 
 ---
 

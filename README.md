@@ -192,12 +192,6 @@ This project is fully compatible with production deployment:
 
 ---
 
-## 🎯 Project Pitch (for Recruiters)
-
-> “Campuses often suffer from ignored environmental issues — like water leakage, poor waste disposal, or electricity misuse. I built EcoAware to empower students to report these issues with photos and track them until resolution. It uses Spring Boot, Spring Security, JWT, file upload, REST APIs, and role-based access. It’s secure, structured, and solves a real community problem.”
-
----
-
 ## 🛠️ Planned Enhancements
 
 * ✅ Frontend (React + Material UI) – In progress

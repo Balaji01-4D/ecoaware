@@ -1,7 +1,3 @@
-Here's a professional and comprehensive `README.md` for your EcoAware Complaint Tracker project:
-
----
-
 # 🛠️ EcoAware Complaint Tracker
 
 A production-ready, secure complaint tracking system built using **Spring Boot**, **Java 21**, and **PostgreSQL**, designed to empower students and staff to raise and track environmental or facility-related issues within their campus or organization.
@@ -201,5 +197,3 @@ This project is fully compatible with production deployment:
 * ⏳ Advanced image storage (e.g., AWS S3)
 
 ---
-
-this is ai generated readme file for ecoaware complaint tracker project

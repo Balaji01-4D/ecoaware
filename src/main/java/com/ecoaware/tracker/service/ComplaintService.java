@@ -58,7 +58,7 @@ public class ComplaintService {
         response.setDescription(complaint.getDescription());
         response.setImagePath(complaint.getImagePath());
         response.setStatus(complaint.getStatus());
-        response.setUsersResponse(userService.convertToUserResponseDto(user));
+        response.setUsersResponse(userService.toUserResponseDto(user));
         response.setCategoryResponse(categoryService.convertToCategoryDto(complaint.getCategory()));
         return response;
     }

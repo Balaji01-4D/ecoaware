@@ -1,12 +1,10 @@
 package com.ecoaware.tracker.controller;
 
-import com.ecoaware.tracker.DTO.UsersRequest;
-import com.ecoaware.tracker.DTO.UsersResponse;
-import com.ecoaware.tracker.model.Users;
+import com.ecoaware.tracker.DTO.AuthenticationResponse;
+import com.ecoaware.tracker.DTO.LoginRequest;
+import com.ecoaware.tracker.DTO.RegisterRequest;
 import com.ecoaware.tracker.service.UserService;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.ErrorResponseException;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,22 +23,13 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<UsersResponse> register(@RequestBody UsersRequest usersRequest) {
-        return ResponseEntity.ok(userService.addUser(usersRequest));
+    public ResponseEntity<AuthenticationResponse> register(@RequestBody RegisterRequest registerRequest) {
+        return ResponseEntity.ok(userService.register(registerRequest));
     }
 
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody UsersRequest usersRequest) {
-        String email = usersRequest.getEmail();
-        Users user;
-        if (email == null) {
-            throw new ErrorResponseException(HttpStatus.NOT_FOUND);
-        }
-        user = userService.getUserByEmail(email);
-        if (user.getPassword().equals(usersRequest.getPassword())){
-            return ResponseEntity.ok("success");
-        }
-        return ResponseEntity.ok("wrong password");
+    public ResponseEntity<AuthenticationResponse> authenticate(@RequestBody LoginRequest loginRequest) {
+        return ResponseEntity.ok(userService.authenticate(loginRequest));
     }
 }

@@ -1,55 +1,65 @@
 package com.ecoaware.tracker.service;
 
-import com.ecoaware.tracker.DTO.UsersRequest;
+import com.ecoaware.tracker.DTO.AuthenticationResponse;
+import com.ecoaware.tracker.DTO.LoginRequest;
+import com.ecoaware.tracker.DTO.RegisterRequest;
 import com.ecoaware.tracker.DTO.UsersResponse;
 import com.ecoaware.tracker.model.Users;
 import com.ecoaware.tracker.repo.UserRepo;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import com.ecoaware.tracker.security.JwtService;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
+
+import java.util.HashMap;
 
 @Service
 public class UserService {
 
-    private UserRepo userRepo;
+    private final UserRepo userRepo;
+    private final JwtService jwtService;
+    private final PasswordEncoder passwordEncoder;
+    private final AuthenticationManager authenticationManager;
 
-    private BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder(10);
-
-    public UserService(UserRepo userRepo) {
+    public UserService(UserRepo userRepo, JwtService jwtService, PasswordEncoder passwordEncoder, AuthenticationManager authenticationManager) {
         this.userRepo = userRepo;
+        this.jwtService = jwtService;
+        this.passwordEncoder = passwordEncoder;
+        this.authenticationManager = authenticationManager;
     }
 
-    public UsersResponse addUser(UsersRequest usersRequest) {
-        return convertToUserResponseDto(userRepo.save(convertToUser(usersRequest)));
+    public AuthenticationResponse register(RegisterRequest registerRequest) {
+        Users user = userRepo.save(convertToUser(registerRequest));
+        String token = jwtService.generateToken(new HashMap<>(), new UserPrincipal(user));
+        return toAuthenticationResponseDto(token);
     }
 
-    private Users convertToUser(UsersRequest usersRequest){
-        String encodedPassword = passwordEncoder(usersRequest.getPassword());
+    private AuthenticationResponse toAuthenticationResponseDto(String token) {
+        return new AuthenticationResponse(token);
+    }
+
+    private Users convertToUser(RegisterRequest registerRequest){
         return new Users(
-                usersRequest.getName(),
-                usersRequest.getEmail(),
-                encodedPassword,
-                usersRequest.getRole()
+                registerRequest.getName(),
+                registerRequest.getEmail(),
+                passwordEncoder(registerRequest.getPassword()),
+                registerRequest.getRole()
         );
-
     }
 
     private String passwordEncoder(String password) {
-        return bCryptPasswordEncoder.encode(password);
+        return passwordEncoder.encode(password);
     }
 
-    public boolean verify(Users user) {
-        return userRepo.existsById(user.getId());
-    }
-
-    public Users loadUserByUsername(String username) {
-        return userRepo.getByName(username);
-    }
-
-    public Users getUserByEmail(String email) {
+    public Users findUserByEmail(String email) {
         return userRepo.findByEmail(email);
     }
 
-    public UsersResponse convertToUserResponseDto(Users user) {
+    public UsersResponse toUserResponseDto(Users user) {
         UsersResponse response = new UsersResponse();
         response.setId(user.getId());
         response.setName(user.getName());
@@ -57,4 +67,21 @@ public class UserService {
         return response;
     }
 
+    public AuthenticationResponse authenticate(LoginRequest loginRequest) {
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(
+                        loginRequest.getEmail(),
+                        loginRequest.getPassword()
+                )
+        );
+
+        if (authentication.isAuthenticated()) {
+            Users user = findUserByEmail(loginRequest.getEmail());
+            String token = jwtService.generateToken(new HashMap<>(), new UserPrincipal(user));
+            return toAuthenticationResponseDto(token);
+        }
+        else {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
+    }
 }

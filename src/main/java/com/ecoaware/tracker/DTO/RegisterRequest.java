@@ -3,7 +3,7 @@ package com.ecoaware.tracker.DTO;
 import lombok.Data;
 
 @Data
-public class UsersRequest {
+public class RegisterRequest {
     private String name;
     private String email;
     private String password;

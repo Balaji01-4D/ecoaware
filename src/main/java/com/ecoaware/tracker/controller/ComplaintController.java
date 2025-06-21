@@ -40,7 +40,7 @@ public class ComplaintController {
 
     @GetMapping("/complaints")
     public ResponseEntity<List<ComplaintResponse>> getMyComplaints(@AuthenticationPrincipal UserDetails userDetails) {
-        Users user = userService.getUserByEmail(userDetails.getUsername());
+        Users user = userService.findUserByEmail(userDetails.getUsername());
         List<Complaint> complaints = complaintService.getComplaintsById(user.getId());
         List<ComplaintResponse> responses = complaints.stream()
                 .map(complaintService::convertToResponseDto)
@@ -50,7 +50,7 @@ public class ComplaintController {
 
     @PostMapping("/complaints")
     public ResponseEntity<ComplaintResponse> addComplaint(@AuthenticationPrincipal UserDetails userDetails, @RequestBody ComplaintRequest complaintRequest) {
-        Users user = userService.getUserByEmail(userDetails.getUsername());
+        Users user = userService.findUserByEmail(userDetails.getUsername());
         Complaint complaint = complaintService.fromRequestDto(complaintRequest, user);
         complaintService.saveComplaint(complaint);
         return ResponseEntity.ok(complaintService.convertToResponseDto(complaint));
@@ -60,7 +60,7 @@ public class ComplaintController {
     @GetMapping("/complaints/{id}")
     public ResponseEntity<ComplaintResponse> getComplaintById(@AuthenticationPrincipal UserDetails userDetails, @PathVariable Long id){
         Complaint complaint = complaintService.getById(id);
-        Users user = userService.getUserByEmail(userDetails.getUsername());
+        Users user = userService.findUserByEmail(userDetails.getUsername());
         if (!user.getRole().equals("ADMIN") && !complaint.getCreatedBy().getId().equals(user.getId())) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "complaint not found");
         }
@@ -73,7 +73,7 @@ public class ComplaintController {
                                                                  @PathVariable Long id,
                                                                  @RequestBody ComplaintRequest complaintRequest) {
         Complaint complaint = complaintService.getById(id);
-        Users user = userService.getUserByEmail(userDetails.getUsername());
+        Users user = userService.findUserByEmail(userDetails.getUsername());
         if (!user.getRole().equals("ADMIN") && !complaint.getCreatedBy().getId().equals(user.getId())) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "complaint not found");
         }
@@ -85,7 +85,7 @@ public class ComplaintController {
     @DeleteMapping("/complaints/{id}")
     public ResponseEntity<String> deleteComplaintById(@AuthenticationPrincipal UserDetails userDetails, @PathVariable Long id){
         Complaint complaint = complaintService.getById(id);
-        Users user = userService.getUserByEmail(userDetails.getUsername());
+        Users user = userService.findUserByEmail(userDetails.getUsername());
         if (!user.getRole().equals("ADMIN") && !complaint.getCreatedBy().getId().equals(user.getId())) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "complaint not found");
         }

@@ -217,8 +217,4 @@ This project is fully compatible with production deployment:
 
 ---
 
-## 📄 License
-
-This project is licensed under the MIT License.
-
----
+this is ai generated readme file for ecoaware complaint tracker project

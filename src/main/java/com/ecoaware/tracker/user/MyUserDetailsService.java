@@ -1,8 +1,5 @@
-package com.ecoaware.tracker.service;
+package com.ecoaware.tracker.user;
 
-import com.ecoaware.tracker.model.Users;
-import com.ecoaware.tracker.repo.UserRepo;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -11,15 +8,15 @@ import org.springframework.stereotype.Service;
 @Service
 public class MyUserDetailsService implements UserDetailsService {
 
-    private final UserRepo userRepo;
+    private final UserRepository userRepository;
 
-    public MyUserDetailsService(UserRepo userRepo) {
-        this.userRepo = userRepo;
+    public MyUserDetailsService(UserRepository userRepository) {
+        this.userRepository = userRepository;
     }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Users user = userRepo.findByEmail(username);
+        Users user = userRepository.findByEmail(username);
 
         if (user == null) {
             System.out.println("user not found");

@@ -1,9 +1,9 @@
-package com.ecoaware.tracker.controller;
+package com.ecoaware.tracker.user;
 
-import com.ecoaware.tracker.DTO.AuthenticationResponse;
-import com.ecoaware.tracker.DTO.LoginRequest;
-import com.ecoaware.tracker.DTO.RegisterRequest;
-import com.ecoaware.tracker.service.UserService;
+import com.ecoaware.tracker.user.dao.AuthenticationResponse;
+import com.ecoaware.tracker.user.dao.LoginRequest;
+import com.ecoaware.tracker.user.dao.RegisterRequest;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -14,13 +14,10 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 @RestController
 @RequestMapping("/auth")
 @CrossOrigin
+@RequiredArgsConstructor
 public class AuthController {
 
     private final UserService userService;
-
-    public AuthController(UserService userService) {
-        this.userService = userService;
-    }
 
     @PostMapping("/register")
     public ResponseEntity<AuthenticationResponse> register(@RequestBody RegisterRequest registerRequest) {

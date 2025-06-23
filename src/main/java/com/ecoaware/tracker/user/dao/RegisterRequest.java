@@ -1,4 +1,4 @@
-package com.ecoaware.tracker.DTO;
+package com.ecoaware.tracker.user.dao;
 
 import lombok.Data;
 

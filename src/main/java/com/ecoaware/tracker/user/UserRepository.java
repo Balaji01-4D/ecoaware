@@ -1,11 +1,10 @@
-package com.ecoaware.tracker.repo;
+package com.ecoaware.tracker.user;
 
-import com.ecoaware.tracker.model.Users;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface UserRepo extends JpaRepository<Users, Long> {
+public interface UserRepository extends JpaRepository<Users, Long> {
 
     Users findByEmail(String username);
 

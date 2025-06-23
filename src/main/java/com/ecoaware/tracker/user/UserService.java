@@ -1,12 +1,10 @@
-package com.ecoaware.tracker.service;
+package com.ecoaware.tracker.user;
 
-import com.ecoaware.tracker.DTO.AuthenticationResponse;
-import com.ecoaware.tracker.DTO.LoginRequest;
-import com.ecoaware.tracker.DTO.RegisterRequest;
-import com.ecoaware.tracker.DTO.UsersResponse;
-import com.ecoaware.tracker.model.Users;
-import com.ecoaware.tracker.repo.UserRepo;
 import com.ecoaware.tracker.security.JwtService;
+import com.ecoaware.tracker.user.dao.AuthenticationResponse;
+import com.ecoaware.tracker.user.dao.LoginRequest;
+import com.ecoaware.tracker.user.dao.RegisterRequest;
+import com.ecoaware.tracker.user.dao.UsersResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -20,20 +18,20 @@ import java.util.HashMap;
 @Service
 public class UserService {
 
-    private final UserRepo userRepo;
+    private final UserRepository userRepository;
     private final JwtService jwtService;
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
 
-    public UserService(UserRepo userRepo, JwtService jwtService, PasswordEncoder passwordEncoder, AuthenticationManager authenticationManager) {
-        this.userRepo = userRepo;
+    public UserService(UserRepository userRepository, JwtService jwtService, PasswordEncoder passwordEncoder, AuthenticationManager authenticationManager) {
+        this.userRepository = userRepository;
         this.jwtService = jwtService;
         this.passwordEncoder = passwordEncoder;
         this.authenticationManager = authenticationManager;
     }
 
     public AuthenticationResponse register(RegisterRequest registerRequest) {
-        Users user = userRepo.save(convertToUser(registerRequest));
+        Users user = userRepository.save(convertToUser(registerRequest));
         String token = jwtService.generateToken(new HashMap<>(), new UserPrincipal(user));
         return toAuthenticationResponseDto(token);
     }
@@ -56,7 +54,7 @@ public class UserService {
     }
 
     public Users findUserByEmail(String email) {
-        return userRepo.findByEmail(email);
+        return userRepository.findByEmail(email);
     }
 
     public UsersResponse toUserResponseDto(Users user) {

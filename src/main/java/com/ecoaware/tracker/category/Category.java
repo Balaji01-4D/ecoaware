@@ -1,4 +1,4 @@
-package com.ecoaware.tracker.model;
+package com.ecoaware.tracker.category;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

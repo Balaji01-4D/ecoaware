@@ -1,7 +1,7 @@
 package com.ecoaware.tracker.security;
 
-import com.ecoaware.tracker.repo.UserRepo;
-import com.ecoaware.tracker.service.UserPrincipal;
+import com.ecoaware.tracker.user.UserRepository;
+import com.ecoaware.tracker.user.UserPrincipal;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -21,7 +21,7 @@ import java.io.IOException;
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtService jwtService;
-    private final UserRepo userRepo;
+    private final UserRepository userRepository;
 
     @Override
     protected void doFilterInternal(@NonNull HttpServletRequest request,
@@ -37,7 +37,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         username = jwtService.extractUsername(jwtToken);
 
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            UserPrincipal userPrincipal = new UserPrincipal(userRepo.findByEmail(username));
+            UserPrincipal userPrincipal = new UserPrincipal(userRepository.findByEmail(username));
             if (jwtService.isTokenValid(jwtToken, userPrincipal)) {
                 UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(
                         userPrincipal,

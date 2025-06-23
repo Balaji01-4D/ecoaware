@@ -1,14 +1,13 @@
-package com.ecoaware.tracker.controller;
+package com.ecoaware.tracker.admin;
 
-import com.ecoaware.tracker.DTO.ComplaintResponse;
-import com.ecoaware.tracker.DTO.ComplaintStatusUpdate;
-import com.ecoaware.tracker.model.Complaint;
-import com.ecoaware.tracker.service.ComplaintService;
+import com.ecoaware.tracker.complaint.dto.ComplaintResponse;
+import com.ecoaware.tracker.complaint.dto.ComplaintStatusUpdate;
+import com.ecoaware.tracker.complaint.Complaint;
+import com.ecoaware.tracker.complaint.ComplaintService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @CrossOrigin

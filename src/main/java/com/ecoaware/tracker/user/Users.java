@@ -1,4 +1,4 @@
-package com.ecoaware.tracker.model;
+package com.ecoaware.tracker.user;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

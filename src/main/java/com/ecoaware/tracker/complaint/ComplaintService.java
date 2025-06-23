@@ -1,11 +1,11 @@
-package com.ecoaware.tracker.service;
+package com.ecoaware.tracker.complaint;
 
-import com.ecoaware.tracker.DTO.ComplaintRequest;
-import com.ecoaware.tracker.DTO.ComplaintResponse;
+import com.ecoaware.tracker.category.CategoryService;
+import com.ecoaware.tracker.complaint.dto.ComplaintRequest;
+import com.ecoaware.tracker.complaint.dto.ComplaintResponse;
 import com.ecoaware.tracker.enums.Status;
-import com.ecoaware.tracker.model.Complaint;
-import com.ecoaware.tracker.model.Users;
-import com.ecoaware.tracker.repo.ComplaintRepo;
+import com.ecoaware.tracker.user.UserService;
+import com.ecoaware.tracker.user.Users;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -18,16 +18,16 @@ public class ComplaintService {
 
     private final UserService userService;
     private final CategoryService categoryService;
-    private final ComplaintRepo complaintRepo;
+    private final ComplaintRepository complaintRepository;
 
-    public ComplaintService(UserService userService, CategoryService categoryService, ComplaintRepo complaintRepo) {
+    public ComplaintService(UserService userService, CategoryService categoryService, ComplaintRepository complaintRepository) {
         this.userService = userService;
         this.categoryService = categoryService;
-        this.complaintRepo = complaintRepo;
+        this.complaintRepository = complaintRepository;
     }
 
     public List<Complaint> getAllComplaints() {
-        return complaintRepo.findAll();
+        return complaintRepository.findAll();
     }
 
     public Complaint fromRequestDto(ComplaintRequest complaintRequest, Users user){
@@ -43,11 +43,11 @@ public class ComplaintService {
     }
 
     public Complaint getById(Long id) {
-        return complaintRepo.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "complaint not found"));
+        return complaintRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "complaint not found"));
     }
 
     public List<Complaint> getComplaintsById(Long id) {
-        return complaintRepo.findByCreatedById(id);
+        return complaintRepository.findByCreatedById(id);
     }
 
     public ComplaintResponse convertToResponseDto(Complaint complaint) {
@@ -64,7 +64,7 @@ public class ComplaintService {
     }
 
     public void deleteComplaintById(Long id) {
-        complaintRepo.deleteById(id);
+        complaintRepository.deleteById(id);
     }
 
 
@@ -82,7 +82,7 @@ public class ComplaintService {
     }
 
     public void saveComplaint(Complaint complaint) {
-        complaintRepo.save(complaint);
+        complaintRepository.save(complaint);
     }
 
 

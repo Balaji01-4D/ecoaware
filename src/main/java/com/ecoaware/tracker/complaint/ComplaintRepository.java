@@ -1,14 +1,12 @@
-package com.ecoaware.tracker.repo;
+package com.ecoaware.tracker.complaint;
 
-import com.ecoaware.tracker.model.Complaint;
-import com.ecoaware.tracker.model.Users;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 @Repository
-public interface ComplaintRepo extends JpaRepository<Complaint, Long> {
+public interface ComplaintRepository extends JpaRepository<Complaint, Long> {
 
 
 

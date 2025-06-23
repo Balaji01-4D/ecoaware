@@ -1,6 +1,5 @@
-package com.ecoaware.tracker.service;
+package com.ecoaware.tracker.user;
 
-import com.ecoaware.tracker.model.Users;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

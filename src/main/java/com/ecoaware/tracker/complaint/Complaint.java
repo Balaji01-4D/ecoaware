@@ -1,6 +1,8 @@
-package com.ecoaware.tracker.model;
+package com.ecoaware.tracker.complaint;
 
+import com.ecoaware.tracker.category.Category;
 import com.ecoaware.tracker.enums.Status;
+import com.ecoaware.tracker.user.Users;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;

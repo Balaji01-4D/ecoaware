@@ -1,6 +1,8 @@
-package com.ecoaware.tracker.DTO;
+package com.ecoaware.tracker.complaint.dto;
 
+import com.ecoaware.tracker.category.CategoryResponse;
 import com.ecoaware.tracker.enums.Status;
+import com.ecoaware.tracker.user.dao.UsersResponse;
 import lombok.Data;
 
 @Data

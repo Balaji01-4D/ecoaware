@@ -1,42 +1,29 @@
 package com.ecoaware.tracker.user;
 
-import com.ecoaware.tracker.security.JwtService;
 import com.ecoaware.tracker.user.dao.AuthenticationResponse;
-import com.ecoaware.tracker.user.dao.LoginRequest;
 import com.ecoaware.tracker.user.dao.RegisterRequest;
 import com.ecoaware.tracker.user.dao.UsersResponse;
-import org.springframework.http.HttpStatus;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
-
-import java.util.HashMap;
 
 @Service
+@RequiredArgsConstructor
 public class UserService {
 
     private final UserRepository userRepository;
-    private final JwtService jwtService;
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
 
-    public UserService(UserRepository userRepository, JwtService jwtService, PasswordEncoder passwordEncoder, AuthenticationManager authenticationManager) {
-        this.userRepository = userRepository;
-        this.jwtService = jwtService;
-        this.passwordEncoder = passwordEncoder;
-        this.authenticationManager = authenticationManager;
+
+    public Users register(Users user) {
+        return userRepository.save(user);
     }
 
-    public AuthenticationResponse register(RegisterRequest registerRequest) {
-        Users user = userRepository.save(convertToUser(registerRequest));
-        String token = jwtService.generateToken(new HashMap<>(), new UserPrincipal(user));
-        return toAuthenticationResponseDto(token);
-    }
-
-    private AuthenticationResponse toAuthenticationResponseDto(String token) {
+    public AuthenticationResponse toAuthenticationResponseDto(String token) {
         return new AuthenticationResponse(token);
     }
 
@@ -65,21 +52,21 @@ public class UserService {
         return response;
     }
 
-    public AuthenticationResponse authenticate(LoginRequest loginRequest) {
+    public boolean authenticate(Users user) {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
-                        loginRequest.getEmail(),
-                        loginRequest.getPassword()
+                        user.getEmail(),
+                        user.getPassword()
                 )
         );
+        return authentication.isAuthenticated();
+    }
 
-        if (authentication.isAuthenticated()) {
-            Users user = findUserByEmail(loginRequest.getEmail());
-            String token = jwtService.generateToken(new HashMap<>(), new UserPrincipal(user));
-            return toAuthenticationResponseDto(token);
-        }
-        else {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
-        }
+    public Users fromRegisterRequestDto(RegisterRequest registerRequest) {
+        return new Users(registerRequest.getName(),
+                registerRequest.getEmail(),
+                registerRequest.getPassword(),
+                registerRequest.getRole()
+        );
     }
 }

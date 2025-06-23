@@ -2,8 +2,8 @@ package com.ecoaware.tracker.complaint;
 
 import com.ecoaware.tracker.complaint.dto.ComplaintRequest;
 import com.ecoaware.tracker.complaint.dto.ComplaintResponse;
-import com.ecoaware.tracker.user.Users;
 import com.ecoaware.tracker.user.UserService;
+import com.ecoaware.tracker.user.Users;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;

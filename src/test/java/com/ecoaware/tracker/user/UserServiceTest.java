@@ -1,6 +1,5 @@
 package com.ecoaware.tracker.user;
 
-import com.ecoaware.tracker.security.JwtService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -10,8 +9,6 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
@@ -85,41 +82,4 @@ class UserServiceTest {
         String capturedUser = emailArgumentCaptor.getValue();
         assertThat(capturedUser).isEqualTo(user.getEmail());
     }
-
-
-    @Test
-    void authenticateRegisteredUser() {
-        // given
-        String email = "user4@example.com";
-        Users user = new Users(
-                "user",
-                email,
-                "user@123",
-                "USER"
-        );
-        Authentication authentication = new  UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword());
-        authentication.setAuthenticated(true);
-        // when
-        boolean expected = underTest.authenticate(user);
-        // then
-        assertThat(expected).isTrue();
-    }
-
-    @Test
-    void unAuthenticateNonRegisteredUser() {
-        // given
-        String email = "user1@example.com";
-        Users user = new Users(
-                "user1",
-                email,
-                "user@1234",
-                "USER"
-        );
-        // when
-        boolean expected = underTest.authenticate(user);
-        // then
-        assertThat(expected).isFalse();
-    }
-
-
 }

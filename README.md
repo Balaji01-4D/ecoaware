@@ -177,17 +177,6 @@ A production-ready, secure complaint tracking system built using **Spring Boot**
 
 ---
 
-## 🚀 Deployment Ready
-
-This project is fully compatible with production deployment:
-
-* ✅ Secure authentication
-* ✅ CORS ready
-* ✅ DTO-based request handling
-* ✅ Proper exception management
-
----
-
 ## 🛠️ Planned Enhancements
 
 * ✅ Frontend (React + Material UI) – In progress

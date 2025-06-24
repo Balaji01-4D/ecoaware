@@ -1,12 +1,10 @@
-package com.ecoaware.tracker;
+package com.ecoaware.tracker.user;
 
 import com.ecoaware.tracker.security.JwtService;
-import com.ecoaware.tracker.user.*;
 import com.ecoaware.tracker.user.dao.AuthenticationResponse;
 import com.ecoaware.tracker.user.dao.LoginRequest;
 import com.ecoaware.tracker.user.dao.RegisterRequest;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -34,7 +32,7 @@ class UserControllerTests {
 	private int port;
 	private String baseUrl = "http://localhost:";
 
-	
+
 	@AfterEach
 	void tearDown() {
 		userRepository.deleteAll();
@@ -98,7 +96,6 @@ class UserControllerTests {
 		ResponseEntity<String> authenticationResponse = testRestTemplate.postForEntity(
 				baseUrl + port + "/auth/login", loginRequest, String.class
 		);
-		System.out.println(testRestTemplate.postForEntity(baseUrl + port + "/auth/login", loginRequest, String.class));
 		// then
 		assertThat(authenticationResponse.getStatusCode()).isEqualTo(HttpStatus.UNAUTHORIZED);
 	}

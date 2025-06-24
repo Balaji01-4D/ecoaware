@@ -1,8 +1,10 @@
 package com.ecoaware.tracker.user.dao;
 
-import lombok.Data;
+import lombok.Builder;
+import lombok.Getter;
 
-@Data
+@Getter
+@Builder
 public class RegisterRequest {
     private String name;
     private String email;

@@ -20,6 +20,7 @@ public class UserService {
 
 
     public Users register(Users user) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userRepository.save(user);
     }
 
@@ -53,13 +54,17 @@ public class UserService {
     }
 
     public boolean authenticate(Users user) {
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        user.getEmail(),
-                        user.getPassword()
-                )
-        );
-        return authentication.isAuthenticated();
+        try {
+            Authentication authentication = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(
+                            user.getEmail(),
+                            user.getPassword()
+                    )
+            );
+            return authentication.isAuthenticated();
+        } catch (Exception e) {
+            return false;
+        }
     }
 
     public Users fromRegisterRequestDto(RegisterRequest registerRequest) {
@@ -67,6 +72,7 @@ public class UserService {
                 registerRequest.getEmail(),
                 registerRequest.getPassword(),
                 registerRequest.getRole()
+
         );
     }
 }

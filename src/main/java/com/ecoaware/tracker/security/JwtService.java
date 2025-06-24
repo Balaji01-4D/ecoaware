@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import javax.crypto.SecretKey;
 import java.util.Base64;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
@@ -42,6 +43,10 @@ public class JwtService {
     private SecretKey getSecretKey() {
         byte[] keyBytes = Base64.getDecoder().decode(this.SECRET_KEY);
         return Keys.hmacShaKeyFor(keyBytes);
+    }
+
+    public String generateToken(UserDetails userDetails) {
+        return this.generateToken(new HashMap<>(), userDetails);
     }
 
 

@@ -1,23 +1,23 @@
-# 🛠️ EcoAware Complaint Tracker
+# EcoAware Complaint Tracker
 
 A production-ready, secure complaint tracking system built using **Spring Boot**, **Java 21**, and **PostgreSQL**, designed to empower students and staff to raise and track environmental or facility-related issues within their campus or organization.
 
 ---
 
-## 📌 Features
+## Features
 
-* 🔐 **User Registration & JWT-based Authentication**
-* 📝 **Raise, View, Update, Delete Complaints**
-* 🧾 **Image Upload Support** (e.g., for proof/evidence)
-* 👥 **Role-based Access Control** (User/Admin)
-* 🎯 **Admin Panel** for managing complaints & statuses
-* 🗃️ **Complaint Categories** like Waste, Water, etc.
-* 🕒 **Timestamps** for every complaint
-* ✅ **Secure Password Storage** using BCrypt
+* User Registration & JWT-based Authentication
+* Raise, View, Update, Delete Complaints
+* Image Upload Support (e.g., for proof/evidence)
+* Role-based Access Control (User/Admin)
+* Admin Panel for managing complaints & statuses
+* Complaint Categories like Waste, Water, etc.
+* Timestamps for every complaint
+* Secure Password Storage using BCrypt
 
 ---
 
-## 🧱 Entity Relationship Diagram (ERD)
+## Entity Relationship Diagram (ERD)
 
 ```text
 +---------+       +------------+        +-------------+
@@ -36,7 +36,7 @@ A production-ready, secure complaint tracking system built using **Spring Boot**
 
 ---
 
-## ⚙️ Tech Stack
+## Tech Stack
 
 | Layer       | Technology               |
 | ----------- | ------------------------ |
@@ -50,93 +50,93 @@ A production-ready, secure complaint tracking system built using **Spring Boot**
 
 ---
 
-## 🌐 API Endpoints
+## API Endpoints
 
-### 🔓 Auth
+### Auth
 
-| Endpoint         | Method | Description       |
-| ---------------- | ------ | ----------------- |
-| `/auth/register` | POST   | Register new user |
-| `/auth/login`    | POST   | Authenticate user |
+| Endpoint       | Method | Description       |
+| -------------- | ------ | ----------------- |
+| /auth/register | POST   | Register new user |
+| /auth/login    | POST   | Authenticate user |
 
-### 👤 User Complaint
+### User Complaint
 
-| Endpoint           | Method | Description                       |
-| ------------------ | ------ | --------------------------------- |
-| `/complaints`      | POST   | Create a new complaint            |
-| `/complaints`      | GET    | List complaints of logged-in user |
-| `/complaints/{id}` | GET    | Get specific complaint details    |
-| `/complaints/{id}` | PUT    | Update complaint (if owner)       |
-| `/complaints/{id}` | DELETE | Delete complaint (if owner)       |
+| Endpoint         | Method | Description                       |
+| ---------------- | ------ | --------------------------------- |
+| /complaints      | POST   | Create a new complaint            |
+| /complaints      | GET    | List complaints of logged-in user |
+| /complaints/{id} | GET    | Get specific complaint details    |
+| /complaints/{id} | PUT    | Update complaint (if owner)       |
+| /complaints/{id} | DELETE | Delete complaint (if owner)       |
 
-### 🛠 Admin
+### Admin
 
-| Endpoint                        | Method | Description             |
-| ------------------------------- | ------ | ----------------------- |
-| `/admin/complaints`             | GET    | Get all complaints      |
-| `/admin/complaints/{id}/status` | PUT    | Update complaint status |
+| Endpoint                      | Method | Description             |
+| ----------------------------- | ------ | ----------------------- |
+| /admin/complaints             | GET    | Get all complaints      |
+| /admin/complaints/{id}/status | PUT    | Update complaint status |
 
-### 🗂 Categories
+### Categories
 
-| Endpoint      | Method | Description         |
-| ------------- | ------ | ------------------- |
-| `/categories` | GET    | List all categories |
+| Endpoint    | Method | Description         |
+| ----------- | ------ | ------------------- |
+| /categories | GET    | List all categories |
 
 ---
 
-## 🔐 Security Configuration
+## Security Configuration
 
-* `/auth/**` is publicly accessible
-* `/complaints/**` requires `USER` or `ADMIN`
-* `/admin/**` requires `ADMIN` role
+* /auth/** is publicly accessible
+* /complaints/** requires USER or ADMIN
+* /admin/** requires ADMIN role
 * JWT used for stateless authentication
 * BCryptPasswordEncoder used for password hashing
 
 ---
 
-## 🧪 How to Run the Project
+## How to Run the Project
 
-### 🔧 Prerequisites
+### Prerequisites
 
 * Java 21
 * PostgreSQL (running on default port)
 * Maven
 
-### 🛠️ Setup Instructions
+### Setup Instructions
 
-1. **Clone the repository**
+1. Clone the repository
 
-   ```bash
-   git clone https://github.com/your-username/ecoaware-backend.git
-   cd ecoaware-backend
-   ```
+```bash
+git clone https://github.com/your-username/ecoaware-backend.git
+cd ecoaware-backend
+```
 
-2. **Create PostgreSQL database**
+2. Create PostgreSQL database
 
-   ```sql
-   CREATE DATABASE ecoaware;
-   ```
+```sql
+CREATE DATABASE ecoaware;
+```
 
-3. **Configure application.properties**
+3. Configure application.properties
 
-   ```
-   spring.datasource.url=jdbc:postgresql://localhost:5432/ecoaware
-   spring.datasource.username=your_db_user
-   spring.datasource.password=your_db_password
-   spring.jpa.hibernate.ddl-auto=update
-   ```
+```
+spring.datasource.url=jdbc:postgresql://localhost:5432/ecoaware
+spring.datasource.username=your_db_user
+spring.datasource.password=your_db_password
+spring.jpa.hibernate.ddl-auto=update
+```
 
-4. **Run the app**
+4. Run the app
 
-   ```bash
-   ./mvnw spring-boot:run
-   ```
+```bash
+./mvnw spring-boot:run
+```
 
 ---
 
-## 🧑‍💻 Sample JSON Payloads
+## Sample JSON Payloads
 
-### 🔸 Register User
+### Register User
 
 ```json
 {
@@ -147,7 +147,7 @@ A production-ready, secure complaint tracking system built using **Spring Boot**
 }
 ```
 
-### 🔸 Login
+### Login
 
 ```json
 {
@@ -156,7 +156,7 @@ A production-ready, secure complaint tracking system built using **Spring Boot**
 }
 ```
 
-### 🔸 Create Complaint
+### Create Complaint
 
 ```json
 {
@@ -167,7 +167,7 @@ A production-ready, secure complaint tracking system built using **Spring Boot**
 }
 ```
 
-### 🔸 Admin Status Update
+### Admin Status Update
 
 ```json
 {
@@ -177,12 +177,10 @@ A production-ready, secure complaint tracking system built using **Spring Boot**
 
 ---
 
-## 🛠️ Planned Enhancements
+## Planned Enhancements
 
-* ✅ Frontend (React + Material UI) – In progress
-* ⏳ Pagination & sorting
-* ⏳ Swagger/OpenAPI docs
-* ⏳ Admin user management
-* ⏳ Advanced image storage (e.g., AWS S3)
-
----
+* Frontend (React + Material UI) – In progress
+* Pagination & sorting
+* Swagger/OpenAPI docs
+* Admin user management
+* Advanced image storage (e.g., AWS S3)
